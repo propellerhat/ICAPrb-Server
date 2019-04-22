@@ -114,6 +114,14 @@ module ICAPrb
           return
         end
 
+        # If parsed_data happens to be nil, it means we just consumed some
+        # extra \r\n lines. This was happening after each successful request
+        # and causing exceptions to be thrown.
+        # XXX: The request parser needs to be fixed so that extra \r\n lines
+        # at the end of valid requests get consumed. It will slightly improve
+        # performance as well.
+        return if parsed_data.nil?
+
         unless SUPPORTED_ICAP_VERSIONS.include? parsed_data[:icap_data][:request_line][:version]
           Response.display_error_page(connection,505,
                                       {http_version: '1.0',
