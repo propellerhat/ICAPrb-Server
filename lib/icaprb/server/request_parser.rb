@@ -44,7 +44,7 @@ module ICAPrb
         # returns the length of the chunk as first argument and if ieof is set as second
         private
         def read_chunk_length(line)
-          line_parts = line.chop.split(';')
+          line_parts = line.chomp.split(';')
           chunk_length = line_parts.first.to_i(16)
           is_eof = line_parts.last == ' ieof'
           [chunk_length, is_eof]
@@ -53,7 +53,7 @@ module ICAPrb
 
       # parse header line and returns the parsed line as Array which has the name on index 0 and the value on index 1
       def parse_header(line)
-        line.chop.split(':',2).map {|x| x.strip}
+        line.chomp.split(':',2).map {|x| x.strip}
       end
 
 
@@ -76,7 +76,7 @@ module ICAPrb
       # @raise ICAP_Parse_Error if something is invalid
       def parse_icap_request_line(line)
         str_method, str_uri, str_version = line.split(' ')
-        str_version = str_version.split('/').last.chop
+        str_version = str_version.split('/').last.chomp
         raise ICAP_Parse_Error.new "invalid icap Method in RequestLine #{line}" if str_method.nil?
         case str_method.upcase
           when 'REQMOD'
@@ -134,7 +134,7 @@ module ICAPrb
       def parse_http_request_line(line)
         @length_read += line.length
         str_method, str_uri, str_version = line.split(' ')
-        str_version = str_version.split('/').last.chop
+        str_version = str_version.split('/').last.chomp
         raise HTTP_Parse_Error.new 'invalid http Method' if str_method.nil?
         unless str_method == 'CONNECT'
           uri = URI(str_uri)
@@ -154,7 +154,7 @@ module ICAPrb
       # @raise HTTP_Parse_Error if something is invalid
       def parse_http_response_line(line)
         @length_read += line.length
-        str_version, str_code = line.chop.split(' ')[0..1]
+        str_version, str_code = line.chomp.split(' ')[0..1]
         str_version = str_version.split('/').last
         raise HTTP_Parse_Error.new 'invalid Code' if str_code.nil?
         code = str_code.to_i
