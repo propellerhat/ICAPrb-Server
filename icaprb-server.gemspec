@@ -6,13 +6,13 @@ require 'icaprb/server/version'
 Gem::Specification.new do |spec|
   spec.name          = 'icaprb-server'
   spec.version       = ICAPrb::Server::VERSION
-  spec.authors       = ['Fabian Franz']
+  spec.authors       = ['Fabian Franz', 'Jay Smith']
   spec.email         = ['fabian.franz@students.fh-hagenberg.at']
   spec.license       = 'BSD-2-Clause'
   spec.required_ruby_version = '>= 2.0.0'
 
   spec.summary       = %q{This project includes an ICAP server fully implemented in Ruby but it does not include services.}
-  spec.homepage      = 'https://github.com/fabianfrz/ICAPrb-Server'
+  spec.homepage      = 'https://github.com/propellerhat/ICAPrb-Server'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
