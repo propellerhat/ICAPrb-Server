@@ -80,9 +80,11 @@ module ICAPrb
             end
             @logger.info "[CONNECT] Client from #{ip}:#{port} connected to this server"
             begin
-              until connection.closed? do
+              until connection.eof? do
                 handle_request(connection,ip)
               end
+              connection.close
+              @loger.info "[DISCONNECT] Client from #{ip}:#{port} disconnected from this server"
             rescue Errno::ECONNRESET => e
               @logger.error "[CONNECTION ERROR] Client #{ip}:#{port} got disconnected (CONNECTION RESET BY PEER): #{e}"
             end
